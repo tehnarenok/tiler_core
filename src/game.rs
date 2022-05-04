@@ -133,13 +133,13 @@ impl Game {
         game.players[current_player].front = new_front;
         game.players[current_player].color = color;
         game.players[current_player].points = points;
-        game.current_player = (current_player + 1) % 2;
+        game.current_player = (current_player + 1) % game.players.len();
         game.steps.push((current_player, color));
 
         game.is_game_over = game.get_is_game_over();
 
         if game.is_game_over {
-            game.winner = self.get_winner();
+            game.winner = game.get_winner();
         }
 
         game
@@ -149,7 +149,7 @@ impl Game {
 impl Game {
     fn get_is_game_over(&self) -> bool {
         for player in &self.players {
-            if self.field.data.len() / 2 <= player.points {
+            if self.field.data.len() / self.players.len() <= player.points {
                 return true
             }
         }
