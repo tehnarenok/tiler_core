@@ -1,10 +1,10 @@
 [package]
 name = "tiler_core"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2018"
 repository = "https://github.com/tehnarenok/tiler_core"
 description = "Core library for tiler game"
-license-file = "LICENSE"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
