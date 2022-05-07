@@ -6,7 +6,7 @@ extern crate std;
 use rand_chacha::ChaCha20Rng;
 use serde::{Serialize, Deserialize};
 use crate::locale::Locale;
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 use {
     crate::locale::LocaleExport,
 };
@@ -49,7 +49,7 @@ pub struct FieldType<'a> {
 }
 
 #[public_struct]
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 #[derive(Serialize, Deserialize)]
 struct FieldTypeExport {
     title: LocaleExport,
@@ -57,7 +57,7 @@ struct FieldTypeExport {
     start_cells: Vec<LocaleExport>
 }
 
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 impl<'a> FieldType<'a> {
     pub fn export(&self) -> FieldTypeExport {
         FieldTypeExport { 
@@ -86,7 +86,7 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
     }
 ];
 
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 pub fn get_fields_types() -> Vec<FieldTypeExport> {
     FIELD_TYPES.into_iter().map(|el| el.export()).collect()
 }

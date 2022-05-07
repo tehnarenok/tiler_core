@@ -1,7 +1,7 @@
 use std::vec;
 
 use best_macros::public_struct;
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 use {
     serde::{Serialize, Deserialize}
 };
@@ -10,7 +10,7 @@ use crate::{field::{Field}, player::{PlayerState}};
 
 #[public_struct]
 #[derive(Clone)]
-#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Game {
     field: Field,
     players: Vec<PlayerState>,

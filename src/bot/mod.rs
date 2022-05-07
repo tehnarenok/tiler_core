@@ -1,4 +1,4 @@
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 use {
     crate::locale::LocaleExport,
 };
@@ -41,7 +41,7 @@ const BOT_TYPES: &'static [BotType<'static>] = &[
     },
 ];
 
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 pub fn get_bot_types() -> Vec<LocaleExport> {
     BOT_TYPES.iter().map(|el| el.title.export()).collect()
 }

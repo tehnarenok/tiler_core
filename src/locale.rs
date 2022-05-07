@@ -1,4 +1,4 @@
-#[cfg(feature = "wasm")] 
+#[cfg(feature = "serde")] 
 use {
     best_macros::public_struct,
 };
@@ -11,14 +11,14 @@ pub struct Locale<'a> {
 }
 
 #[public_struct]
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct LocaleExport {
     ru: String,
     en: String
 }
 
-#[cfg(feature = "wasm")]
+#[cfg(feature = "serde")]
 impl<'a> Locale<'a> {
     pub fn export(&self) -> LocaleExport {
         LocaleExport { 
