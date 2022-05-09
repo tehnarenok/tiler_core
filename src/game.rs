@@ -1,6 +1,8 @@
 use std::vec;
 
+use base64ct::{Base64, Encoding};
 use best_macros::public_struct;
+use sha2::{Sha256, Digest};
 #[cfg(feature = "serde")]
 use {
     serde::{Serialize, Deserialize}
@@ -183,5 +185,27 @@ impl Game {
         }
 
         winner
+    }
+}
+
+impl Game {
+    pub fn hash(&self) -> String {
+        let str = serde_json::to_string(self).unwrap();
+
+        let mut hasher = Sha256::new();
+
+        hasher.update(&str);
+
+        let hash = hasher.finalize();
+
+        let result = Base64::encode_string(&hash);
+
+        return result;
+    }
+
+    pub fn validate(&self, hash: &str) -> bool {
+        let current_hash = self.hash();
+
+        return current_hash == hash.to_string()
     }
 }
