@@ -11,12 +11,21 @@ mod medium;
 fn try_step(game: &Game, color: usize) -> (Game, usize) {
     let player = game.current_player;
     let points = game.players[player].points;
-    let game = game.clone();
+    let game_clone = game.clone();
     let game = game.step(color);
 
-    let diff = game.players[player].points - points;
+    match game {
+        Ok(game) => {
+            let diff = game.players[player].points - points;
 
-    (game, diff)
+            (game, diff)
+        },
+        _ => {
+            (game_clone, 0)
+        }
+    }
+
+    
 }
 
 struct BotType<'a> {

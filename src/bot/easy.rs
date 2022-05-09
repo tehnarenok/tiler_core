@@ -13,7 +13,7 @@ pub fn step(game: &Game) -> Game {
         
     }
 
-    let game = game.step(best_color);
+    let game = game.step(best_color).unwrap();
 
     game
 }

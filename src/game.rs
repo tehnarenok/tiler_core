@@ -6,7 +6,7 @@ use {
     serde::{Serialize, Deserialize}
 };
 
-use crate::{field::{Field}, player::{PlayerState}};
+use crate::{field::{Field}, player::{PlayerState}, errors::Errors};
 
 #[public_struct]
 #[derive(Clone)]
@@ -104,7 +104,17 @@ impl Game {
 }
 
 impl Game {
-    pub fn step(&self, color: usize) -> Game {
+    pub fn step(&self, color: usize) -> Result<Game, Errors> {
+        if self.count_colors <= color {
+            return Err(Errors::ColorOutOfRange)
+        }
+
+        for player in &self.players {
+            if player.color == color {
+                return Err(Errors::ColorAlreadyUsed)
+            }
+        }
+
         let mut game = self.clone();
         let current_player = game.current_player;
         let mut points = game.players[current_player].points;
@@ -142,7 +152,7 @@ impl Game {
             game.winner = game.get_winner();
         }
 
-        game
+        Ok(game)
     }
 }
 
