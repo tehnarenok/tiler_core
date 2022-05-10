@@ -1,4 +1,5 @@
 mod box_field;
+mod four_rooms;
 
 use best_macros::*;
 use rand::{thread_rng, Rng, SeedableRng, RngCore};
@@ -83,7 +84,20 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
         ],
         start_cells: box_field::STRART_CELLS,
         generate_fn: box_field::generate_fn,
-    }
+    },
+    FieldType {
+        title: Locale {
+            ru: "Базовое поле",
+            en: "Basic field"
+        },
+        sizes: &[
+            Size { x: 11, y: 7},
+            Size { x: 21, y: 11},
+            Size { x: 35, y: 21},
+        ],
+        start_cells: four_rooms::STRART_CELLS,
+        generate_fn: four_rooms::generate_fn,
+    },
 ];
 
 #[cfg(feature = "serde")]
