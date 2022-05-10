@@ -38,6 +38,7 @@ pub struct Size {
 struct GenerateResult {
     data: Vec<Cell>,
     start_cells: Vec<Vec<usize>>,
+    size: Size
 }
 
 #[public_struct]
@@ -205,6 +206,7 @@ impl Field {
                 );
                 field.data = gen_result.data;
                 field.starts_cells = gen_result.start_cells;
+                field.field_size = gen_result.size;
 
                 let mut r: ChaCha20Rng = SeedableRng::from_seed(seed);
 

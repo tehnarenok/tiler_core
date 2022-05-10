@@ -92,6 +92,7 @@ pub fn generate_fn<'a>(size: Size, start_points_type: usize, count_colors: usize
     
     GenerateResult {
         data: data,
-        start_cells: start_cells
+        start_cells: start_cells,
+        size: size.clone()
     }
 }

@@ -35,28 +35,29 @@ pub fn generate_fn<'a>(size: Size, start_points_type: usize, count_colors: usize
     let size_y = size.y * 2 + 1;
 
     for room in 0..4 {
-        let dx: f32 = match room {
-            1 | 3 => (0.5 + 0.5 / size.x as f32),
-            _ => 0.0
+        let dx = match room {
+            1 | 3 => size.x + 1,
+            _ => 0 
         };
 
-        let dy: f32 = match room {
-            2 | 3 => 0.5 + 0.5 / size.y as f32,
-            _ => 0.0
+        let dy = match room {
+            2 | 3 => size.y + 1,
+            _ => 0
         };
 
         for i in 0..size.x {
             for j in 0..size.y {
                 let mut neighbors: Vec<usize> = vec![];
-                if i > 0 { neighbors.push(((i - 1) * size.y + j) as usize * (room + 1)); }
-                if i < size.x - 1 { neighbors.push(((i + 1) * size.y + j) as usize * (room + 1)); }
-                if j > 0 { neighbors.push((i * size.y + j - 1) as usize * (room + 1)); }
-                if j < size.y - 1 { neighbors.push((i * size.y + j + 1) as usize * (room + 1)); }
+                let offset  = ((size.x * size.y) * room) as usize;
+                if i > 0 { neighbors.push(((i - 1) * size.y + j) as usize + offset); }
+                if i < size.x - 1 { neighbors.push(((i + 1) * size.y + j) as usize + offset); }
+                if j > 0 { neighbors.push((i * size.y + j - 1) as usize + offset); }
+                if j < size.y - 1 { neighbors.push((i * size.y + j + 1) as usize + offset); }
 
                 let cell = Cell {
                     coord: Coords {
-                        x: (1.0 / size_x as f32) * i as f32 + dx,
-                        y: (1.0 / size_y as f32) * j as f32 + dy,
+                        x: (1.0 / size_x as f32) * (i + dx) as f32,
+                        y: (1.0 / size_y as f32) * (j + dy) as f32,
                     },
                     owner: None,
                     color: (r.next_u32() % count_colors as u32) as usize,
@@ -129,6 +130,7 @@ pub fn generate_fn<'a>(size: Size, start_points_type: usize, count_colors: usize
     
     GenerateResult {
         data: data,
-        start_cells: start_cells
+        start_cells: start_cells,
+        size: Size {x: size_x, y: size_y},
     }
 }
