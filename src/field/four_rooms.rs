@@ -31,14 +31,17 @@ pub fn generate_fn<'a>(size: Size, start_points_type: usize, count_colors: usize
         false => COLORS.len() - 1,
     };
 
+    let size_x = size.x * 2 + 1;
+    let size_y = size.y * 2 + 1;
+
     for room in 0..4 {
         let dx: f32 = match room {
-            1 | 3 => (1.0 + 1.5 / size.x as f32),
+            1 | 3 => (0.5 + 0.5 / size.x as f32),
             _ => 0.0
         };
 
         let dy: f32 = match room {
-            2 | 3 => 1.0 + 1.5 / size.y as f32,
+            2 | 3 => 0.5 + 0.5 / size.y as f32,
             _ => 0.0
         };
 
@@ -52,14 +55,14 @@ pub fn generate_fn<'a>(size: Size, start_points_type: usize, count_colors: usize
 
                 let cell = Cell {
                     coord: Coords {
-                        x: (1.0 / size.x as f32) * i as f32 + dx,
-                        y: (1.0 / size.y as f32) * j as f32 + dy,
+                        x: (1.0 / size_x as f32) * i as f32 + dx,
+                        y: (1.0 / size_y as f32) * j as f32 + dy,
                     },
                     owner: None,
                     color: (r.next_u32() % count_colors as u32) as usize,
                     size: CellSize {
-                        x: (1.0 / size.x as f32),
-                        y: (1.0 / size.y as f32),
+                        x: (1.0 / size_x as f32),
+                        y: (1.0 / size_y as f32),
                     },
                     neighbors: neighbors
                 };
