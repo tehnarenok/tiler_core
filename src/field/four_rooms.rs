@@ -95,7 +95,7 @@ pub fn generate_fn<'a>(size: Size, start_points_type: usize, count_colors: usize
                 (size.x * size.y * 0 + 0) as usize, (size.x * size.y * 0 + size.x * size.y - 1) as usize,
                 (size.x * size.y * 1 + 0) as usize, (size.x * size.y * 1 + size.x * size.y - 1) as usize,
                 (size.x * size.y * 2 + 0) as usize, (size.x * size.y * 2 + size.x * size.y - 1) as usize,
-                (size.x * size.y * 3 + 0) as usize, (size.x * size.y * 33 + size.x * size.y - 1) as usize,
+                (size.x * size.y * 3 + 0) as usize, (size.x * size.y * 3 + size.x * size.y - 1) as usize,
             ]);
             start_cells.push(vec![
                 (size.x * size.y * 0 + (size.y - 1)) as usize, (size.x * size.y * 0 + size.y * (size.x - 1)) as usize,
