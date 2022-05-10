@@ -92,7 +92,7 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
             en: "Four rooms"
         },
         sizes: &[
-            Size { x: 13, y: 9},
+            Size { x: 15, y: 9},
             Size { x: 21, y: 11},
             Size { x: 29, y: 17},
         ],
