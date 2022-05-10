@@ -88,13 +88,13 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
     },
     FieldType {
         title: Locale {
-            ru: "Базовое поле",
-            en: "Basic field"
+            ru: "Четыре комнаты",
+            en: "Four rooms"
         },
         sizes: &[
-            Size { x: 11, y: 7},
+            Size { x: 13, y: 9},
             Size { x: 21, y: 11},
-            Size { x: 35, y: 21},
+            Size { x: 29, y: 17},
         ],
         start_cells: four_rooms::STRART_CELLS,
         generate_fn: four_rooms::generate_fn,
