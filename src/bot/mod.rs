@@ -8,20 +8,19 @@ use crate::{game::Game, locale::Locale};
 mod easy;
 mod medium;
 
-fn try_step(game: &Game, color: usize) -> (Game, usize) {
+fn try_step(game: &Game, color: usize) -> Option<(Game, usize)> {
     let player = game.current_player;
     let points = game.players[player].points;
-    let game_clone = game.clone();
     let game = game.step(color);
 
     match game {
         Ok(game) => {
             let diff = game.players[player].points - points;
 
-            (game, diff)
+            Some((game, diff))
         },
         _ => {
-            (game_clone, 0)
+            None
         }
     }
 

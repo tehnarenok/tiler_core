@@ -7,23 +7,33 @@ pub fn step(game: &Game) -> Game {
 
     let players_colors: Vec<usize> = game.players.iter().map(|el| el.color).collect();
 
-    let mut best_color: usize = 0;
-    let mut best_diff: usize = 0;
+    let mut best_color: Option<usize> = None;
+    let mut best_diff: Option<usize> = None;
 
     for color in 0..game.count_colors {
         if players_colors.contains(&color) {
             continue;
         }
 
-        let (_, diff) = try_step(&game, color);
+        let result = try_step(&game, color);
 
-        if diff > best_diff {
-            best_diff = diff;
-            best_color = color;
+        if let Some((_, diff)) = result {
+            if let Some(best_diff) = best_diff  {
+                if diff < best_diff {
+                    continue;
+                }
+            }
+
+            best_diff = Some(diff);
+            best_color = Some(color);
         }
     }
 
-    let game = game.step(best_color).unwrap();
+    if let Some(best_color) = best_color {
+        let game = game.step(best_color).unwrap();
 
-    game
+        game
+    } else {
+        super::easy::step(&game)
+    }
 }
