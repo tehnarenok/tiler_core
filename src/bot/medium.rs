@@ -18,7 +18,7 @@ pub fn step(game: &Game) -> Game {
         let result = try_step(&game, color);
 
         if let Some((_, diff)) = result {
-            if let Some(best_diff) = best_diff  {
+            if let Some(best_diff) = best_diff {
                 if diff < best_diff {
                     continue;
                 }

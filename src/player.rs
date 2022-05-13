@@ -1,8 +1,6 @@
 use best_macros::public_struct;
 #[cfg(feature = "serde")]
-use {
-    serde::{Serialize, Deserialize}
-};
+use serde::{Deserialize, Serialize};
 
 #[public_struct]
 #[derive(Clone)]
@@ -11,5 +9,5 @@ struct PlayerState {
     points: usize,
     front: Vec<usize>,
     color: usize,
-    start_cells: Vec<usize>
+    start_cells: Vec<usize>,
 }

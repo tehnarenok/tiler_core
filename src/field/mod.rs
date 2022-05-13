@@ -2,28 +2,17 @@ mod box_field;
 mod four_rooms;
 
 use best_macros::*;
-use rand::{thread_rng, Rng, SeedableRng, RngCore};
+use rand::{thread_rng, Rng, RngCore, SeedableRng};
 extern crate std;
-use rand_chacha::ChaCha20Rng;
-use serde::{Serialize, Deserialize};
 use crate::locale::Locale;
 #[cfg(feature = "serde")]
-use {
-    crate::locale::LocaleExport,
-};
+use crate::locale::LocaleExport;
+use rand_chacha::ChaCha20Rng;
+use serde::{Deserialize, Serialize};
 
 pub const COLORS: [&str; 11] = [
-    "#026d35",
-    "#5b23a4",
-    "#05f0e4",
-    "#e30000",
-    "#ff3ac2",
-    "#fd791a",
-    "#1c9bfd",
-    "#dde026",
-    "#08b35c",
-    "#b8b8b8",
-    "#bb92fc",
+    "#026d35", "#5b23a4", "#05f0e4", "#e30000", "#ff3ac2", "#fd791a", "#1c9bfd", "#dde026",
+    "#08b35c", "#b8b8b8", "#bb92fc",
 ];
 
 #[public_struct]
@@ -38,7 +27,7 @@ pub struct Size {
 struct GenerateResult {
     data: Vec<Cell>,
     start_cells: Vec<Vec<usize>>,
-    size: Size
+    size: Size,
 }
 
 #[public_struct]
@@ -47,7 +36,12 @@ pub struct FieldType<'a> {
     title: Locale<'a>,
     sizes: &'a [Size],
     start_cells: &'a [Locale<'a>],
-    generate_fn: fn(size: Size, start_points_type: usize, count_colors: usize, seed: [u8; 32]) -> GenerateResult
+    generate_fn: fn(
+        size: Size,
+        start_points_type: usize,
+        count_colors: usize,
+        seed: [u8; 32],
+    ) -> GenerateResult,
 }
 
 #[public_struct]
@@ -56,16 +50,16 @@ pub struct FieldType<'a> {
 struct FieldTypeExport {
     title: LocaleExport,
     sizes: Vec<Size>,
-    start_cells: Vec<LocaleExport>
+    start_cells: Vec<LocaleExport>,
 }
 
 #[cfg(feature = "serde")]
 impl<'a> FieldType<'a> {
     pub fn export(&self) -> FieldTypeExport {
-        FieldTypeExport { 
-            title: self.title.export(), 
-            sizes: self.sizes.to_vec(), 
-            start_cells: self.start_cells.into_iter().map(|el| el.export()).collect()
+        FieldTypeExport {
+            title: self.title.export(),
+            sizes: self.sizes.to_vec(),
+            start_cells: self.start_cells.into_iter().map(|el| el.export()).collect(),
         }
     }
 }
@@ -74,14 +68,14 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
     FieldType {
         title: Locale {
             ru: "Базовое поле",
-            en: "Basic field"
+            en: "Basic field",
         },
         sizes: &[
-            Size { x: 15, y: 9},
-            Size { x: 25, y: 15},
-            Size { x: 40, y: 24},
-            Size { x: 50, y: 30},
-            Size { x: 75, y: 45},
+            Size { x: 15, y: 9 },
+            Size { x: 25, y: 15 },
+            Size { x: 40, y: 24 },
+            Size { x: 50, y: 30 },
+            Size { x: 75, y: 45 },
         ],
         start_cells: box_field::STRART_CELLS,
         generate_fn: box_field::generate_fn,
@@ -89,12 +83,12 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
     FieldType {
         title: Locale {
             ru: "Четыре комнаты",
-            en: "Four rooms"
+            en: "Four rooms",
         },
         sizes: &[
-            Size { x: 15, y: 9},
-            Size { x: 21, y: 11},
-            Size { x: 29, y: 17},
+            Size { x: 15, y: 9 },
+            Size { x: 21, y: 11 },
+            Size { x: 29, y: 17 },
         ],
         start_cells: four_rooms::STRART_CELLS,
         generate_fn: four_rooms::generate_fn,
@@ -127,7 +121,7 @@ struct Cell {
     owner: Option<usize>,
     color: usize,
     size: CellSize,
-    neighbors: Vec<usize>
+    neighbors: Vec<usize>,
 }
 
 #[public_struct]
@@ -161,10 +155,7 @@ impl Field {
         let mut field: Field = Self {
             field_type,
             count_colors,
-            field_size: Size {
-                x: 10,
-                y: 10,
-            },
+            field_size: Size { x: 10, y: 10 },
             data: vec![],
             starts_cells: vec![],
             seed,
@@ -180,18 +171,18 @@ impl Field {
                 let sizes = field_type.sizes;
                 let field_size_idx = match field_size >= sizes.len() {
                     true => 0,
-                    false => field_size
+                    false => field_size,
                 };
 
                 let size = sizes.get(field_size_idx);
                 match size {
                     Some(size) => {
                         field.field_size = *size;
-                    },
-                    None => return None
+                    }
+                    None => return None,
                 }
-            },
-            None => return None
+            }
+            None => return None,
         }
 
         let field_type = FIELD_TYPES.get(field.field_type);
@@ -202,7 +193,7 @@ impl Field {
                     field.field_size,
                     field.start_cells_type,
                     field.count_colors,
-                    field.seed
+                    field.seed,
                 );
                 field.data = gen_result.data;
                 field.starts_cells = gen_result.start_cells;
@@ -210,7 +201,10 @@ impl Field {
 
                 let mut r: ChaCha20Rng = SeedableRng::from_seed(seed);
 
-                let mut players_colors = [(r.next_u32() % count_colors as u32) as usize, (r.next_u32() % count_colors as u32) as usize];
+                let mut players_colors = [
+                    (r.next_u32() % count_colors as u32) as usize,
+                    (r.next_u32() % count_colors as u32) as usize,
+                ];
 
                 while players_colors[0] == players_colors[1] {
                     players_colors[1] = (r.next_u32() % count_colors as u32) as usize;
@@ -230,12 +224,14 @@ impl Field {
                     }
 
                     for cell in front {
-                        while field.data[cell].color == players_colors[0] || field.data[cell].color == players_colors[1] {
+                        while field.data[cell].color == players_colors[0]
+                            || field.data[cell].color == players_colors[1]
+                        {
                             field.data[cell].color = (r.next_u32() % count_colors as u32) as usize;
                         }
                     }
                 }
-            },
+            }
             None => {}
         }
 

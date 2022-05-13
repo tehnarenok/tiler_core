@@ -2,13 +2,11 @@ use std::vec;
 
 use base64ct::{Base64, Encoding};
 use best_macros::public_struct;
-use sha2::{Sha256, Digest};
 #[cfg(feature = "serde")]
-use {
-    serde::{Serialize, Deserialize}
-};
+use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 
-use crate::{field::{Field}, player::{PlayerState}, errors::Errors};
+use crate::{errors::Errors, field::Field, player::PlayerState};
 
 #[public_struct]
 #[derive(Clone)]
@@ -38,7 +36,9 @@ impl Game {
     ) -> Game {
         let field = match field {
             Some(field) => field,
-            None => Field::new(field_type, field_size, count_colors, start_cells_type, seed).unwrap()
+            None => {
+                Field::new(field_type, field_size, count_colors, start_cells_type, seed).unwrap()
+            }
         };
 
         let seed = field.seed.clone();
@@ -58,8 +58,13 @@ impl Game {
                         points += 1;
                         front.append(&mut field.data[*start_cell].neighbors.clone());
                     }
-                    
-                    players.push(PlayerState { points: points, front: front, color: color, start_cells: start_cells.clone() })
+
+                    players.push(PlayerState {
+                        points: points,
+                        front: front,
+                        color: color,
+                        start_cells: start_cells.clone(),
+                    })
                 }
 
                 players
@@ -71,13 +76,13 @@ impl Game {
             players: players,
             current_player: match current_player {
                 Some(current_player) => current_player,
-                None => 0
+                None => 0,
             },
             count_colors: count_colors,
             seed: seed,
             steps: match steps {
                 Some(steps) => steps,
-                None => vec![]
+                None => vec![],
             },
             is_game_over: false,
             winner: None,
@@ -90,14 +95,14 @@ impl Game {
         current_player: usize,
         count_colors: usize,
         seed: [u8; 32],
-        steps: Vec<(usize, usize)>
+        steps: Vec<(usize, usize)>,
     ) -> Game {
-        Game { 
-            field: field, 
-            players: players, 
-            current_player: current_player, 
-            count_colors: count_colors, 
-            seed: seed, 
+        Game {
+            field: field,
+            players: players,
+            current_player: current_player,
+            count_colors: count_colors,
+            seed: seed,
             steps: steps,
             is_game_over: false,
             winner: None,
@@ -108,12 +113,12 @@ impl Game {
 impl Game {
     pub fn step(&self, color: usize) -> Result<Game, Errors> {
         if self.count_colors <= color {
-            return Err(Errors::ColorOutOfRange)
+            return Err(Errors::ColorOutOfRange);
         }
 
         for player in &self.players {
             if player.color == color {
-                return Err(Errors::ColorAlreadyUsed)
+                return Err(Errors::ColorAlreadyUsed);
             }
         }
 
@@ -125,7 +130,7 @@ impl Game {
 
         while queue.len() > 0 {
             let item = queue.pop();
-            
+
             match item {
                 Some(item) => {
                     if game.field.data[item].owner == None && game.field.data[item].color == color {
@@ -135,7 +140,7 @@ impl Game {
                     } else if game.field.data[item].owner == None && !new_front.contains(&item) {
                         new_front.push(item)
                     }
-                },
+                }
                 None => {
                     break;
                 }
@@ -162,7 +167,7 @@ impl Game {
     fn get_is_game_over(&self) -> bool {
         for player in &self.players {
             if self.field.data.len() / self.players.len() <= player.points {
-                return true
+                return true;
             }
         }
 
@@ -171,7 +176,7 @@ impl Game {
 
     fn get_winner(&self) -> Option<usize> {
         if !self.is_game_over {
-            return None
+            return None;
         }
 
         let mut winner: Option<usize> = None;
@@ -206,6 +211,6 @@ impl Game {
     pub fn validate(&self, hash: &str) -> bool {
         let current_hash = self.hash();
 
-        return current_hash == hash.to_string()
+        return current_hash == hash.to_string();
     }
 }

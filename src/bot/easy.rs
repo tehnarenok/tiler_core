@@ -10,7 +10,6 @@ pub fn step(game: &Game) -> Game {
 
     while players_colors.contains(&best_color) {
         best_color = (thread_rng().gen::<u32>() % game.count_colors as u32) as usize;
-        
     }
 
     let game = game.step(best_color).unwrap();
