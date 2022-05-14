@@ -32,8 +32,8 @@ pub fn step(game: &Game) -> Game {
     if let Some(best_color) = best_color {
         let game = game.step(best_color).unwrap();
 
-        game
-    } else {
-        super::easy::step(&game)
+        return game;
     }
+
+    super::easy::step(&game)
 }
