@@ -2,6 +2,7 @@ mod box_field;
 mod bricks;
 mod brilliant;
 mod four_rooms;
+mod mosaics;
 
 use best_macros::*;
 use rand::{thread_rng, Rng, RngCore, SeedableRng};
@@ -121,6 +122,20 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
         ],
         start_cells: brilliant::STRART_CELLS,
         generate_fn: brilliant::generate_fn,
+    },
+    FieldType {
+        title: Locale {
+            ru: "Мозайка - паркет",
+            en: "Mosaics parquet",
+        },
+        sizes: &[
+            Size { x: 24, y: 16 },
+            Size { x: 40, y: 24 },
+            Size { x: 50, y: 30 },
+            Size { x: 68, y: 44 },
+        ],
+        start_cells: mosaics::parquet_1::STRART_CELLS,
+        generate_fn: mosaics::parquet_1::generate_fn,
     },
 ];
 
