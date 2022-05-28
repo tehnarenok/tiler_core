@@ -1,4 +1,6 @@
 mod box_field;
+mod bricks;
+mod brilliant;
 mod four_rooms;
 
 use best_macros::*;
@@ -82,6 +84,20 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
     },
     FieldType {
         title: Locale {
+            ru: "Кирпичики",
+            en: "Bricks",
+        },
+        sizes: &[
+            Size { x: 24, y: 15 },
+            Size { x: 40, y: 23 },
+            Size { x: 50, y: 31 },
+            Size { x: 74, y: 45 },
+        ],
+        start_cells: bricks::STRART_CELLS,
+        generate_fn: bricks::generate_fn,
+    },
+    FieldType {
+        title: Locale {
             ru: "Четыре комнаты",
             en: "Four rooms",
         },
@@ -92,6 +108,19 @@ pub const FIELD_TYPES: &'static [FieldType<'static>] = &[
         ],
         start_cells: four_rooms::STRART_CELLS,
         generate_fn: four_rooms::generate_fn,
+    },
+    FieldType {
+        title: Locale {
+            ru: "Бриллиант",
+            en: "Brilliant",
+        },
+        sizes: &[
+            Size { x: 39, y: 21 },
+            Size { x: 49, y: 29 },
+            Size { x: 63, y: 35 },
+        ],
+        start_cells: brilliant::STRART_CELLS,
+        generate_fn: brilliant::generate_fn,
     },
 ];
 

@@ -1,6 +1,6 @@
 [package]
 name = "tiler_core"
-version = "0.1.13"
+version = "0.1.14"
 edition = "2018"
 repository = "https://github.com/tehnarenok/tiler_core"
 description = "Core library for tiler game"
